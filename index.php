@@ -13,7 +13,7 @@ $postCards = [
     [
         'heading' => 'Игра престолов',
         'type' => 'post-text',
-        'content' => 'Не могу дождаться начала финального сезона своего любимого сериала!',
+        'content' => 'Действие «Игры престолов» происходит в вымышленном мире, напоминающем средневековую Европу. В сериале одновременно действует множество персонажей и развивается несколько сюжетных линий. Основных сюжетных арок три: первая посвящена борьбе нескольких влиятельных домов за Железный Трон Семи Королевств либо за независимость от него; вторая — потомку свергнутой династии правителей, принцессе-изгнаннице, планирующей вернуть престол; третья — древнему братству, охраняющему государство от угроз с севера.',
         'user_name' => 'Владик',
         'avatar' => 'userpic.jpg'
     ],
@@ -39,6 +39,26 @@ $postCards = [
         'avatar' => 'userpic.jpg'
     ]
 ];
+
+function textCutter($text, $textLenght = 100) {
+    $words = explode(' ', $text);
+    $countWords = 0;
+    $textResult = '';
+    
+    if (isset($text)) {
+        foreach ($words as $key => $val) {
+            $countWords += mb_strlen($val, 'utf8');
+            $textResult = $textResult.' '.$val;
+            if ($countWords > $textLenght) {
+                $textResult = '<p>'.$textResult.'... </p>'.'<a class="post-text__more-link" href="#">Читать далее</a>';
+                break;
+            };
+        };
+    };
+
+    return $textResult;
+};
+
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -383,9 +403,9 @@ $postCards = [
                             elseif ($card['type'] == 'post-text'):
                         ?>
                         <!--содержимое для поста-текста-->
-                        <p>
-                            <?=$card['content']; ?>
-                        </p>
+                        
+                        <?=textCutter($card['content']); ?>
+                        
                         <?php 
                             elseif ($card['type'] == 'post-photo'): 
                         ?>
