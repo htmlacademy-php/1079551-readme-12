@@ -1,8 +1,8 @@
 <?php
-$is_auth = rand(0, 1);
+$isAuth = rand(0, 1);
 
-$user_name = 'Chetin Vitalii'; // укажите здесь ваше имя
-$post_cards = [
+$userName = 'Chetin Vitalii'; // укажите здесь ваше имя
+$postCards = [
     [
         'heading' => 'Цитата',
         'type' => 'post-quote',
@@ -184,8 +184,8 @@ $post_cards = [
             </form>
             <div class="header__nav-wrapper">
                 <!-- здесь должен быть PHP код, который показывает следующий тег по условию -->
-                <?php
-            if ($is_auth == 1): 
+            <?php
+                if ($isAuth == 1): 
             ?>
 
 
@@ -218,7 +218,7 @@ $post_cards = [
                                 <div class="header__profile-name">
                                     <span>
                                         <!--здесь должно быть имя пользователя-->
-                                        <?=$user_name;?>
+                                        <?=$userName;?>
                                     </span>
                                     <svg class="header__link-arrow" width="10" height="6">
                                         <use xlink:href="#icon-arrow-right-ad"></use>
@@ -260,8 +260,8 @@ $post_cards = [
                         </li>
                     </ul>
                 </nav>
-                <?php
-             endif; 
+            <?php
+                endif; 
             ?>
             </div>
         </div>
@@ -357,45 +357,45 @@ $post_cards = [
             <div class="popular__posts">
                 
                 <?php
-foreach ($post_cards as $key => $val):
-?>
+                    foreach ($postCards as $card):
+                ?>
 
-                <article class="popular__post post <?=$val['type']; ?>">
+                <article class="popular__post post <?=$card['type']; ?>">
                     <header class="post__header">
                         <h2>
                             <!--здесь заголовок-->
-                            <?=$val['heading']; ?>
+                            <?=$card['heading']; ?>
                         </h2>
                     </header>
                     <div class="post__main">
                         <!--здесь содержимое карточки-->
                         <?php
-                if ($val['type'] == 'post-quote'): 
-                ?>
+                            if ($card['type'] == 'post-quote'): 
+                        ?>
                         <!--содержимое для поста-цитаты-->
                         <blockquote>
                             <p>
-                                <?=$val['content']; ?>
+                                <?=$card['content']; ?>
                             </p>
                             <cite>Неизвестный Автор</cite>
                         </blockquote>
                         <?php
-                elseif ($val['type'] == 'post-text'):
-                ?>
+                            elseif ($card['type'] == 'post-text'):
+                        ?>
                         <!--содержимое для поста-текста-->
                         <p>
-                            <?=$val['content']; ?>
+                            <?=$card['content']; ?>
                         </p>
                         <?php 
-                elseif ($val['type'] == 'post-photo'): 
-                ?>
+                            elseif ($card['type'] == 'post-photo'): 
+                        ?>
                         <!--содержимое для поста-фото-->
                         <div class="post-photo__image-wrapper">
-                            <img src="img/<?=$val['content']; ?>" alt="Фото от пользователя" width="360" height="240">
+                            <img src="img/<?=$card['content']; ?>" alt="Фото от пользователя" width="360" height="240">
                         </div>
                         <?php
-                elseif ($val['type'] == 'post-link'):
-                ?>
+                            elseif ($card['type'] == 'post-link'):
+                        ?>
                         <!--содержимое для поста-ссылки-->
                         <div class="post-link__wrapper">
                             <a class="post-link__external" href="http://" title="Перейти по ссылке">
@@ -406,30 +406,30 @@ foreach ($post_cards as $key => $val):
                                     <div class="post-link__info">
                                         <h3>
                                             <!--здесь заголовок-->
-                                            <?=$val['heading']; ?>
+                                            <?=$card['heading']; ?>
                                         </h3>
                                     </div>
                                 </div>
                                 <span>
                                     <!--здесь ссылка-->
-                                    <?=$val['content']; ?>
+                                    <?=$card['content']; ?>
                                 </span>
                             </a>
                         </div>
                         <?php
-                endif;
-                ?>
+                            endif;
+                        ?>
                     </div>
                     <footer class="post__footer">
                         <div class="post__author">
                             <a class="post__author-link" href="#" title="Автор">
                                 <div class="post__avatar-wrapper">
                                     <!--укажите путь к файлу аватара-->
-                                    <img class="post__author-avatar" src="img/<?=$val['avatar']; ?>"
+                                    <img class="post__author-avatar" src="img/<?=$card['avatar']; ?>"
                                         alt="Аватар пользователя">
                                 </div>
                                 <div class="post__info">
-                                    <b class="post__author-name"><?=$val['user_name']; ?></b>
+                                    <b class="post__author-name"><?=$card['user_name']; ?></b>
                                     <time class="post__time" datetime="">дата</time>
                                 </div>
                             </a>
@@ -460,8 +460,8 @@ foreach ($post_cards as $key => $val):
                     </footer>
                 </article>
                 <?php
-endforeach;
-?>
+                    endforeach;
+                ?>
             </div>
         </div>
     </section>
