@@ -39,17 +39,40 @@ $postCards = [
         'avatar' => 'userpic.jpg'
     ]
 ];
-
-function textCutter($text, $textLenght = 100) {
+/*
+function textCutter($text, $textLenght = 300) {
     $words = explode(' ', $text);
     $countWords = 0;
     $textResult = '';
     
     if (isset($text)) {
-        foreach ($words as $key => $val) {
-            $countWords += mb_strlen($val, 'utf8');
-            $textResult = $textResult.' '.$val;
+        foreach ($words as $word) {
+            $countWords += mb_strlen($word, 'utf8');
+            $textResult = $textResult.' '.$word;
             if ($countWords > $textLenght) {
+                $textResult = '<p>'.$textResult.'... </p>'.'<a class="post-text__more-link" href="#">Читать далее</a>';
+                break;
+            };
+        };
+    };
+
+    return $textResult;
+};
+*/
+
+function textCutter($text, $textLenght = 300) {
+    $words = explode(' ', $text);
+    $countWords = 0;
+    $textResult = '';
+    $wordsResult = [];
+    
+    if (isset($text)) {
+        foreach ($words as $word) {
+            $countWords += mb_strlen($word, 'utf8');
+            $wordsResult[] = $word;
+            
+            if ($countWords > $textLenght) {
+                $textResult = implode(' ', $wordsResult);
                 $textResult = '<p>'.$textResult.'... </p>'.'<a class="post-text__more-link" href="#">Читать далее</a>';
                 break;
             };
