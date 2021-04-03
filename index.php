@@ -39,47 +39,30 @@ $postCards = [
         'avatar' => 'userpic.jpg'
     ]
 ];
-/*
-function textCutter($text, $textLenght = 300) {
-    $words = explode(' ', $text);
-    $countWords = 0;
-    $textResult = '';
-    
-    if (isset($text)) {
-        foreach ($words as $word) {
-            $countWords += mb_strlen($word, 'utf8');
-            $textResult = $textResult.' '.$word;
-            if ($countWords > $textLenght) {
-                $textResult = '<p>'.$textResult.'... </p>'.'<a class="post-text__more-link" href="#">Читать далее</a>';
+
+function cutText(string $textForCut, int $maxResultLenght = 300): string {
+    /* считаю кол-во символов в строке без пробелов */
+    $totalWordLength = mb_strlen(str_replace(' ', '', $textForCut), 'utf8');
+
+    if ($totalWordLength <= $maxResultLenght) {
+        return $textForCut;
+    }
+    else {
+        $wordsArray = explode(' ', $textForCut);
+        $totalWordLength = 0;
+        $textForCut = '';
+        $wordsResultArray = [];
+        foreach ($wordsArray as $word) {           
+            if ($totalWordLength > $maxResultLenght) {
+                $textForCut = implode(' ', $wordsResultArray);
+                $textForCut = '<p>'.$textForCut.'... </p><a class="post-text__more-link" href="#">Читать далее</a>';
                 break;
             };
+            $totalWordLength += mb_strlen($word, 'utf8');
+            $wordsResultArray[] = $word;
         };
+        return $textForCut;
     };
-
-    return $textResult;
-};
-*/
-
-function textCutter($text, $textLenght = 300) {
-    $words = explode(' ', $text);
-    $countWords = 0;
-    $textResult = '';
-    $wordsResult = [];
-    
-    if (isset($text)) {
-        foreach ($words as $word) {
-            $countWords += mb_strlen($word, 'utf8');
-            $wordsResult[] = $word;
-            
-            if ($countWords > $textLenght) {
-                $textResult = implode(' ', $wordsResult);
-                $textResult = '<p>'.$textResult.'... </p>'.'<a class="post-text__more-link" href="#">Читать далее</a>';
-                break;
-            };
-        };
-    };
-
-    return $textResult;
 };
 
 ?>
@@ -427,7 +410,7 @@ function textCutter($text, $textLenght = 300) {
                         ?>
                         <!--содержимое для поста-текста-->
                         
-                        <?=textCutter($card['content']); ?>
+                        <?=cutText($card['content']); ?>
                         
                         <?php 
                             elseif ($card['type'] == 'post-photo'): 
