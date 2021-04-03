@@ -54,7 +54,7 @@ function cutText(string $textForCut, int $maxResultLenght = 300): string {
         foreach ($wordsArray as $word) {           
             if ($totalWordLength > $maxResultLenght) {
                 $resultString = implode(' ', $wordsResultArray);
-                $resultString = '<p>'.$textForCut.'... </p><a class="post-text__more-link" href="#">Читать далее</a>';
+                $resultString = '<p>'.$resultString.'... </p><a class="post-text__more-link" href="#">Читать далее</a>';
                 break;
             };
             $totalWordLength += mb_strlen($word, 'utf8');
