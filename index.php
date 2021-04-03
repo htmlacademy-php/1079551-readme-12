@@ -42,26 +42,25 @@ $postCards = [
 
 function cutText(string $textForCut, int $maxResultLenght = 300): string {
     /* считаю кол-во символов в строке без пробелов */
-    $totalWordLength = mb_strlen(str_replace(' ', '', $textForCut), 'utf8');
+    $totalWordLength = mb_strlen($textForCut, 'utf8');
 
     if ($totalWordLength <= $maxResultLenght) {
         return $textForCut;
-    }
-    else {
+    } else {
         $wordsArray = explode(' ', $textForCut);
         $totalWordLength = 0;
-        $textForCut = '';
+        $resultString = '';
         $wordsResultArray = [];
         foreach ($wordsArray as $word) {           
             if ($totalWordLength > $maxResultLenght) {
-                $textForCut = implode(' ', $wordsResultArray);
-                $textForCut = '<p>'.$textForCut.'... </p><a class="post-text__more-link" href="#">Читать далее</a>';
+                $resultString = implode(' ', $wordsResultArray);
+                $resultString = '<p>'.$textForCut.'... </p><a class="post-text__more-link" href="#">Читать далее</a>';
                 break;
             };
             $totalWordLength += mb_strlen($word, 'utf8');
             $wordsResultArray[] = $word;
         };
-        return $textForCut;
+        return $resultString;
     };
 };
 
