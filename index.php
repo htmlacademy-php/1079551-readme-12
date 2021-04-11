@@ -67,7 +67,8 @@ function cutText(string $textForCut, int $maxResultLenght = 300): string {
     };
 };
 
-
+$pageContent = include_template('main.php', ['postCards' => $postCards]);
+$layoutContent = include_template('layout.php', ['content' => $pageContent , 'titleName' => $titleName, 'isAuth' => $isAuth, 'userName' => $userName]);
 
 print($layoutContent);
 
