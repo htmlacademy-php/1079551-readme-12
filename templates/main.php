@@ -89,7 +89,9 @@
         <?php
             foreach ($postCards as $card):
         ?>
-
+        <?php
+           $cardContent = htmlspecialchars($card['content']);
+        ?>
         <article class="popular__post post <?=$card['type']; ?>">
             <header class="post__header">
                 <h2>
@@ -105,7 +107,7 @@
                 <!--содержимое для поста-цитаты-->
                 <blockquote>
                     <p>
-                        <?=$card['content']; ?>
+                        <?=$cardContent; ?>
                     </p>
                     <cite>Неизвестный Автор</cite>
                 </blockquote>
@@ -114,14 +116,14 @@
                 ?>
                 <!--содержимое для поста-текста-->
 
-                <?=cutText($card['content']); ?>
+                <?=cutText($cardContent); ?>
 
                 <?php 
                     elseif ($card['type'] == 'post-photo'): 
                 ?>
                 <!--содержимое для поста-фото-->
                 <div class="post-photo__image-wrapper">
-                    <img src="img/<?=$card['content']; ?>" alt="Фото от пользователя" width="360" height="240">
+                    <img src="img/<?=$cardContent; ?>" alt="Фото от пользователя" width="360" height="240">
                 </div>
                 <?php
                     elseif ($card['type'] == 'post-link'):
@@ -142,7 +144,7 @@
                         </div>
                         <span>
                             <!--здесь ссылка-->
-                            <?=$card['content']; ?>
+                            <?=$cardContent; ?>
                         </span>
                     </a>
                 </div>
