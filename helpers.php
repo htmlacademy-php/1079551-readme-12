@@ -262,3 +262,31 @@ function generate_random_date($index)
 
     return $dt;
 }
+
+/* 
+Функция обрезки постов.
+*/
+
+function cutText(string $textForCut, int $maxResultLenght = 300): string {
+    /* считаю кол-во символов в строке */
+    $totalWordLength = mb_strlen($textForCut, 'utf8');
+
+    if ($totalWordLength <= $maxResultLenght) {
+        return '<p>'.$textForCut.'</p>';
+    } else {
+        $wordsArray = explode(' ', $textForCut);
+        $totalWordLength = 0;
+        $resultString = '';
+        $wordsResultArray = [];
+        foreach ($wordsArray as $word) {           
+            if ($totalWordLength > $maxResultLenght) {
+                $resultString = implode(' ', $wordsResultArray);
+                $resultString = '<p>'.$resultString.'... </p><a class="post-text__more-link" href="#">Читать далее</a>';
+                break;
+            };
+            $totalWordLength += mb_strlen($word, 'utf8');
+            $wordsResultArray[] = $word;
+        };
+        return $resultString;
+    };
+};

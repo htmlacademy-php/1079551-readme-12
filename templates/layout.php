@@ -145,8 +145,6 @@
             <?php
                 if ($isAuth == 1): 
             ?>
-
-
                 <nav class="header__nav">
                     <ul class="header__my-nav">
                         <li class="header__my-page header__my-page--popular">

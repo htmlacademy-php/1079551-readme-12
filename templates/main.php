@@ -88,9 +88,7 @@
 
         <?php
             foreach ($postCards as $card):
-        ?>
-        <?php
-           $cardContent = htmlspecialchars($card['content']);
+            $cardContent = htmlspecialchars($card['content']);
         ?>
         <article class="popular__post post <?=$card['type']; ?>">
             <header class="post__header">
