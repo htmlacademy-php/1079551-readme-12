@@ -263,9 +263,6 @@ function generate_random_date($index)
     return $dt;
 }
 
-/* 
-Функция обрезки постов.
-*/
 
 function cutText(string $textForCut, int $maxResultLenght = 300): string {
     /* считаю кол-во символов в строке */

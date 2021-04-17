@@ -88,13 +88,14 @@
 
         <?php
             foreach ($postCards as $card):
-            $cardContent = htmlspecialchars($card['content']);
+                $cardContent = htmlspecialchars($card['content']);
+                $cardHeading = htmlspecialchars($card['heading']);
         ?>
         <article class="popular__post post <?=$card['type']; ?>">
             <header class="post__header">
                 <h2>
                     <!--здесь заголовок-->
-                    <?=$card['heading']; ?>
+                    <?=$cardHeading; ?>
                 </h2>
             </header>
             <div class="post__main">
@@ -136,7 +137,7 @@
                             <div class="post-link__info">
                                 <h3>
                                     <!--здесь заголовок-->
-                                    <?=$card['heading']; ?>
+                                    <?=$cardHeading; ?>
                                 </h3>
                             </div>
                         </div>
