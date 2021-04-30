@@ -286,4 +286,32 @@ function cutText(string $textForCut, int $maxResultLenght = 300): string {
         };
         return $resultString;
     };
-};
+}
+
+function showFormattedDate(string $date): string 
+{
+    $start_date = new DateTime($date);
+    $since_start = $start_date->diff(new DateTime());
+
+    $minutes = $since_start->days * 24 * 60;
+    $minutes += $since_start->h * 60;
+    $minutes += $since_start->i;
+    
+
+    if ($minutes < 60) {
+        return $minutes.get_noun_plural_form($minutes,' минута',' минуты',' минут'). ' назад';
+    } elseif ($minutes < 1440) {
+        $minutes = floor($minutes / 60);
+        return $minutes.get_noun_plural_form($minutes,' час',' часа',' часов'). ' назад';
+    } elseif ($minutes < 10080) {
+        $minutes = floor($minutes / 1440);
+        return $minutes.get_noun_plural_form($minutes,' день',' дня',' дней'). ' назад';
+    } elseif ($minutes < 50400) {
+        $minutes = floor($minutes / 10080);
+        return $minutes.get_noun_plural_form($minutes,' неделя',' недели',' недель'). ' назад';
+    } elseif ($minutes > 50400) {
+        $minutes = floor($minutes / 43829.1);
+        return $minutes.get_noun_plural_form($minutes,' месяц',' месяца',' мксяцев'). ' назад';
+    }
+
+}
