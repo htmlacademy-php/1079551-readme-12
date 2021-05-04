@@ -298,13 +298,9 @@ function showFormattedDate(string $date): string
     $minutesInWeek = 10080;
     $minutesInMonth = 43829.1;
 
-
-
     $minutesFromPublication = $sinceStart->days * 24 * $minutesInHour;
     $minutesFromPublication += $sinceStart->h * $minutesInHour;
     $minutesFromPublication += $sinceStart->i;
-
-    
 
     if ($minutesFromPublication < $minutesInHour) {
         return $minutesFromPublication.get_noun_plural_form($minutesFromPublication,' минута',' минуты',' минут'). ' назад';
