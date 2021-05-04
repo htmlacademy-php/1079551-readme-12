@@ -290,28 +290,36 @@ function cutText(string $textForCut, int $maxResultLenght = 300): string {
 
 function showFormattedDate(string $date): string 
 {
-    $start_date = new DateTime($date);
-    $since_start = $start_date->diff(new DateTime());
+    $startDate = new DateTime($date);
+    $sinceStart = $startDate->diff(new DateTime());
 
-    $minutes = $since_start->days * 24 * 60;
-    $minutes += $since_start->h * 60;
-    $minutes += $since_start->i;
+    $minutesInHour = 60;
+    $minutesInDay = 1440;
+    $minutesInWeek = 10080;
+    $minutesInMonth = 43829.1;
+
+
+
+    $minutesFromPublication = $sinceStart->days * 24 * $minutesInHour;
+    $minutesFromPublication += $sinceStart->h * $minutesInHour;
+    $minutesFromPublication += $sinceStart->i;
+
     
 
-    if ($minutes < 60) {
-        return $minutes.get_noun_plural_form($minutes,' минута',' минуты',' минут'). ' назад';
-    } elseif ($minutes < 1440) {
-        $minutes = floor($minutes / 60);
-        return $minutes.get_noun_plural_form($minutes,' час',' часа',' часов'). ' назад';
-    } elseif ($minutes < 10080) {
-        $minutes = floor($minutes / 1440);
-        return $minutes.get_noun_plural_form($minutes,' день',' дня',' дней'). ' назад';
-    } elseif ($minutes < 50400) {
-        $minutes = floor($minutes / 10080);
-        return $minutes.get_noun_plural_form($minutes,' неделя',' недели',' недель'). ' назад';
-    } elseif ($minutes > 50400) {
-        $minutes = floor($minutes / 43829.1);
-        return $minutes.get_noun_plural_form($minutes,' месяц',' месяца',' мксяцев'). ' назад';
+    if ($minutesFromPublication < $minutesInHour) {
+        return $minutesFromPublication.get_noun_plural_form($minutesFromPublication,' минута',' минуты',' минут'). ' назад';
+    } elseif ($minutesFromPublication < $minutesInDay) {
+        $minutesFromPublication = floor($minutesFromPublication / $minutesInHour);
+        return $minutesFromPublication.get_noun_plural_form($minutesFromPublication,' час',' часа',' часов'). ' назад';
+    } elseif ($minutesFromPublication < 7 * $minutesInDay) {
+        $minutesFromPublication = floor($minutesFromPublication / $minutesInDay);
+        return $minutesFromPublication.get_noun_plural_form($minutesFromPublication,' день',' дня',' дней'). ' назад';
+    } elseif ($minutesFromPublication < 5 * $minutesInWeek) {
+        $minutesFromPublication = floor($minutesFromPublication / $minutesInWeek);
+        return $minutesFromPublication.get_noun_plural_form($minutesFromPublication,' неделя',' недели',' недель'). ' назад';
+    } else  {
+        $minutesFromPublication = floor($minutesFromPublication / $minutesInMonth);
+        return $minutesFromPublication.get_noun_plural_form($minutesFromPublication,' месяц',' месяца',' месяцев'). ' назад';
     }
 
 }
