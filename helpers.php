@@ -296,7 +296,7 @@ function showFormattedDate(string $date): string
     $minutesInHour = 60;
     $minutesInDay = 1440;
     $minutesInWeek = 10080;
-    $minutesInMonth = 43829.1;
+    $minutesInMonth = 43800;
 
     $minutesFromPublication = $sinceStart->days * 24 * $minutesInHour;
     $minutesFromPublication += $sinceStart->h * $minutesInHour;
@@ -305,17 +305,17 @@ function showFormattedDate(string $date): string
     if ($minutesFromPublication < $minutesInHour) {
         return $minutesFromPublication.get_noun_plural_form($minutesFromPublication,' минута',' минуты',' минут'). ' назад';
     } elseif ($minutesFromPublication < $minutesInDay) {
-        $minutesFromPublication = floor($minutesFromPublication / $minutesInHour);
-        return $minutesFromPublication.get_noun_plural_form($minutesFromPublication,' час',' часа',' часов'). ' назад';
+        $hoursFromPublication = floor($minutesFromPublication / $minutesInHour);
+        return $hoursFromPublication.get_noun_plural_form($hoursFromPublication,' час',' часа',' часов'). ' назад';
     } elseif ($minutesFromPublication < 7 * $minutesInDay) {
-        $minutesFromPublication = floor($minutesFromPublication / $minutesInDay);
-        return $minutesFromPublication.get_noun_plural_form($minutesFromPublication,' день',' дня',' дней'). ' назад';
+        $daysFromPublication = floor($minutesFromPublication / $minutesInDay);
+        return $daysFromPublication.get_noun_plural_form($daysFromPublication,' день',' дня',' дней'). ' назад';
     } elseif ($minutesFromPublication < 5 * $minutesInWeek) {
-        $minutesFromPublication = floor($minutesFromPublication / $minutesInWeek);
-        return $minutesFromPublication.get_noun_plural_form($minutesFromPublication,' неделя',' недели',' недель'). ' назад';
+        $weeksFromPublication = floor($minutesFromPublication / $minutesInWeek);
+        return $weeksFromPublication.get_noun_plural_form($weeksFromPublication,' неделя',' недели',' недель'). ' назад';
     } else  {
-        $minutesFromPublication = floor($minutesFromPublication / $minutesInMonth);
-        return $minutesFromPublication.get_noun_plural_form($minutesFromPublication,' месяц',' месяца',' месяцев'). ' назад';
+        $monthsFromPublication = floor($minutesFromPublication / $minutesInMonth);
+        return $monthsFromPublication.get_noun_plural_form($monthsFromPublication,' месяц',' месяца',' месяцев'). ' назад';
     }
 
 }
