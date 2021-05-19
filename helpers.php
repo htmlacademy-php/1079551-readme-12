@@ -286,4 +286,36 @@ function cutText(string $textForCut, int $maxResultLenght = 300): string {
         };
         return $resultString;
     };
-};
+}
+
+function showFormattedDate(string $date): string 
+{
+    $startDate = new DateTime($date);
+    $sinceStart = $startDate->diff(new DateTime());
+
+    $minutesInHour = 60;
+    $minutesInDay = 1440;
+    $minutesInWeek = 10080;
+    $minutesInMonth = 43800;
+
+    $minutesFromPublication = $sinceStart->days * 24 * $minutesInHour;
+    $minutesFromPublication += $sinceStart->h * $minutesInHour;
+    $minutesFromPublication += $sinceStart->i;
+
+    if ($minutesFromPublication < $minutesInHour) {
+        return $minutesFromPublication.get_noun_plural_form($minutesFromPublication,' минута',' минуты',' минут'). ' назад';
+    } elseif ($minutesFromPublication < $minutesInDay) {
+        $hoursFromPublication = floor($minutesFromPublication / $minutesInHour);
+        return $hoursFromPublication.get_noun_plural_form($hoursFromPublication,' час',' часа',' часов'). ' назад';
+    } elseif ($minutesFromPublication < 7 * $minutesInDay) {
+        $daysFromPublication = floor($minutesFromPublication / $minutesInDay);
+        return $daysFromPublication.get_noun_plural_form($daysFromPublication,' день',' дня',' дней'). ' назад';
+    } elseif ($minutesFromPublication < 5 * $minutesInWeek) {
+        $weeksFromPublication = floor($minutesFromPublication / $minutesInWeek);
+        return $weeksFromPublication.get_noun_plural_form($weeksFromPublication,' неделя',' недели',' недель'). ' назад';
+    } else  {
+        $monthsFromPublication = floor($minutesFromPublication / $minutesInMonth);
+        return $monthsFromPublication.get_noun_plural_form($monthsFromPublication,' месяц',' месяца',' месяцев'). ' назад';
+    }
+
+}
