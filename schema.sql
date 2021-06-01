@@ -9,11 +9,11 @@ USE `1079551-readme-12` ;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `1079551-readme-12`.`users` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `dt_create` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `email` VARCHAR(100) NOT NULL,
-  `username` VARCHAR(30) NOT NULL,
-  `password` VARCHAR(45) NOT NULL,
-  `avatar_url` VARCHAR(50) NULL,
+  `registration_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `email` VARCHAR(255) NOT NULL,
+  `username` VARCHAR(255) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
+  `avatar_url` VARCHAR(255) NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)
 ENGINE = InnoDB;
@@ -24,19 +24,26 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `1079551-readme-12`.`posts` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `dt_create` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `heading` VARCHAR(45) NULL,
-  `content` VARCHAR(255) NULL,
-  `picture` VARCHAR(45) NULL,
-  `video` VARCHAR(45) NULL,
-  `link` VARCHAR(45) NULL,
+  `public_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `heading` VARCHAR(255) NULL,
+  `content` MEDIUMTEXT NULL,
+  `picture` VARCHAR(255) NULL,
+  `video` VARCHAR(255) NULL,
+  `link` VARCHAR(255) NULL,
   `number_of_views` INT NULL DEFAULT 0,
-  `author` INT NOT NULL,
+  `user_id` INT NOT NULL,
+  `content_type_id` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_posts_users_idx` (`author` ASC) VISIBLE,
+  INDEX `fk_posts_users_idx` (`user_id` ASC) VISIBLE,
+  INDEX `fk_posts_content_type1_idx` (`content_type_id` ASC) VISIBLE,
   CONSTRAINT `fk_posts_users`
-    FOREIGN KEY (`author`)
+    FOREIGN KEY (`user_id`)
     REFERENCES `1079551-readme-12`.`users` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_posts_content_type1`
+    FOREIGN KEY (`content_type_id`)
+    REFERENCES `1079551-readme-12`.`content_type` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -47,20 +54,20 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `1079551-readme-12`.`comments` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `dt_create` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `content` VARCHAR(255) NOT NULL,
-  `users_id` INT NOT NULL,
-  `posts_id` INT NOT NULL,
+  `public_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `content` MEDIUMTEXT NOT NULL,
+  `user_id` INT NOT NULL,
+  `post_id` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_comments_users1_idx` (`users_id` ASC) VISIBLE,
-  INDEX `fk_comments_posts1_idx` (`posts_id` ASC) VISIBLE,
+  INDEX `fk_comments_users1_idx` (`user_id` ASC) VISIBLE,
+  INDEX `fk_comments_posts1_idx` (`post_id` ASC) VISIBLE,
   CONSTRAINT `fk_comments_users1`
-    FOREIGN KEY (`users_id`)
+    FOREIGN KEY (`user_id`)
     REFERENCES `1079551-readme-12`.`users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_comments_posts1`
-    FOREIGN KEY (`posts_id`)
+    FOREIGN KEY (`post_id`)
     REFERENCES `1079551-readme-12`.`posts` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -72,18 +79,18 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `1079551-readme-12`.`posts_like` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `posts_id` INT NOT NULL,
-  `users_id` INT NOT NULL,
+  `post_id` INT NOT NULL,
+  `user_id` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_posts_like_posts1_idx` (`posts_id` ASC) VISIBLE,
-  INDEX `fk_posts_like_users1_idx` (`users_id` ASC) VISIBLE,
+  INDEX `fk_posts_like_posts1_idx` (`post_id` ASC) VISIBLE,
+  INDEX `fk_posts_like_users1_idx` (`user_id` ASC) VISIBLE,
   CONSTRAINT `fk_posts_like_posts1`
-    FOREIGN KEY (`posts_id`)
+    FOREIGN KEY (`post_id`)
     REFERENCES `1079551-readme-12`.`posts` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_posts_like_users1`
-    FOREIGN KEY (`users_id`)
+    FOREIGN KEY (`user_id`)
     REFERENCES `1079551-readme-12`.`users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -95,18 +102,18 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `1079551-readme-12`.`subscriptions` (
   `id` INT NOT NULL,
-  `author` INT NOT NULL,
-  `subscription` INT NOT NULL,
+  `user_id` INT NOT NULL,
+  `subscription_user_id` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_subscriptions_users1_idx` (`author` ASC) VISIBLE,
-  INDEX `fk_subscriptions_users2_idx` (`subscription` ASC) VISIBLE,
+  INDEX `fk_subscriptions_users1_idx` (`user_id` ASC) VISIBLE,
+  INDEX `fk_subscriptions_users2_idx` (`subscription_user_id` ASC) VISIBLE,
   CONSTRAINT `fk_subscriptions_users1`
-    FOREIGN KEY (`author`)
+    FOREIGN KEY (`user_id`)
     REFERENCES `1079551-readme-12`.`users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_subscriptions_users2`
-    FOREIGN KEY (`subscription`)
+    FOREIGN KEY (`subscription_user_id`)
     REFERENCES `1079551-readme-12`.`users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -118,20 +125,20 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `1079551-readme-12`.`message` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `dt_create` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `content` VARCHAR(255) NULL,
-  `sender` INT NOT NULL,
-  `recipient` INT NOT NULL,
+  `public_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `content` MEDIUMTEXT NULL,
+  `sender_user_id` INT NOT NULL,
+  `recipient_user_id` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_message_users1_idx` (`sender` ASC) VISIBLE,
-  INDEX `fk_message_users2_idx` (`recipient` ASC) VISIBLE,
+  INDEX `fk_message_users1_idx` (`sender_user_id` ASC) VISIBLE,
+  INDEX `fk_message_users2_idx` (`recipient_user_id` ASC) VISIBLE,
   CONSTRAINT `fk_message_users1`
-    FOREIGN KEY (`sender`)
+    FOREIGN KEY (`sender_user_id`)
     REFERENCES `1079551-readme-12`.`users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_message_users2`
-    FOREIGN KEY (`recipient`)
+    FOREIGN KEY (`recipient_user_id`)
     REFERENCES `1079551-readme-12`.`users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -139,12 +146,13 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `1079551-readme-12`.`hashtag`
+-- Table `1079551-readme-12`.`hashtags`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `1079551-readme-12`.`hashtag` (
+CREATE TABLE IF NOT EXISTS `1079551-readme-12`.`hashtags` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 
@@ -153,29 +161,30 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `1079551-readme-12`.`content_type` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(10) NOT NULL,
-  `icon_name` VARCHAR(10) NOT NULL,
-  PRIMARY KEY (`id`))
+  `name` VARCHAR(100) NOT NULL,
+  `icon_name` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `1079551-readme-12`.`posts_has_hashtag`
+-- Table `1079551-readme-12`.`posts_hashtags`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `1079551-readme-12`.`posts_has_hashtag` (
-  `posts_id` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `1079551-readme-12`.`posts_hashtags` (
+  `post_id` INT NOT NULL,
   `hashtag_id` INT NOT NULL,
-  PRIMARY KEY (`posts_id`, `hashtag_id`),
+  PRIMARY KEY (`post_id`, `hashtag_id`),
   INDEX `fk_posts_has_hashtag_hashtag1_idx` (`hashtag_id` ASC) VISIBLE,
-  INDEX `fk_posts_has_hashtag_posts1_idx` (`posts_id` ASC) VISIBLE,
+  INDEX `fk_posts_has_hashtag_posts1_idx` (`post_id` ASC) VISIBLE,
   CONSTRAINT `fk_posts_has_hashtag_posts1`
-    FOREIGN KEY (`posts_id`)
+    FOREIGN KEY (`post_id`)
     REFERENCES `1079551-readme-12`.`posts` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_posts_has_hashtag_hashtag1`
     FOREIGN KEY (`hashtag_id`)
-    REFERENCES `1079551-readme-12`.`hashtag` (`id`)
+    REFERENCES `1079551-readme-12`.`hashtags` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
