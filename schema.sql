@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `1079551-readme-12`.`users` (
   `email` VARCHAR(255) NOT NULL,
   `username` VARCHAR(255) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
-  `avatar_url` VARCHAR(255) NULL,
+  `avatar_url` VARCHAR(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)
 ENGINE = InnoDB;
@@ -25,11 +25,11 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `1079551-readme-12`.`posts` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `public_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `heading` VARCHAR(255) NULL,
-  `content` MEDIUMTEXT NULL,
-  `picture` VARCHAR(255) NULL,
-  `video` VARCHAR(255) NULL,
-  `link` VARCHAR(255) NULL,
+  `heading` VARCHAR(255) NOT NULL DEFAULT '',
+  `content` MEDIUMTEXT NOT NULL DEFAULT '',
+  `picture` VARCHAR(2000) NOT NULL DEFAULT '',
+  `video` VARCHAR(2000) NOT NULL DEFAULT '',
+  `link` VARCHAR(2000) NOT NULL DEFAULT '',
   `number_of_views` INT NULL DEFAULT 0,
   `user_id` INT NOT NULL,
   `content_type_id` INT NOT NULL,
@@ -75,9 +75,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `1079551-readme-12`.`posts_like`
+-- Table `1079551-readme-12`.`post_likes`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `1079551-readme-12`.`posts_like` (
+CREATE TABLE IF NOT EXISTS `1079551-readme-12`.`post_likes` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `post_id` INT NOT NULL,
   `user_id` INT NOT NULL,
@@ -121,12 +121,12 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `1079551-readme-12`.`message`
+-- Table `1079551-readme-12`.`messages`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `1079551-readme-12`.`message` (
+CREATE TABLE IF NOT EXISTS `1079551-readme-12`.`messages` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `public_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `content` MEDIUMTEXT NULL,
+  `content` MEDIUMTEXT NOT NULL,
   `sender_user_id` INT NOT NULL,
   `recipient_user_id` INT NOT NULL,
   PRIMARY KEY (`id`),
